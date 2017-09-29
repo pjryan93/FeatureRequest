@@ -1,37 +1,134 @@
-{% extends "base.html" %}
-{% block title %}Home{% endblock %}
-{% block body %}
-	<div class="row">
-		<div class = "col-2"></div>
-		<div class = "col-8">
-			<h2 class = "text-center">New Feature Request</h2>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+      <!-- Bootstrap core CSS -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">    
+      <!-- Custom styles for this template -->
+      <!--<link href="https://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">-->
+      <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous">
+      </script>
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" 
+              integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" 
+              crossorigin="anonymous">
+      </script>
+
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+      <script src = "https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
+      <script src = "https://cdnjs.cloudflare.com/ajax/libs/sammy.js/0.7.6/sammy.min.js"></script>
+
+      <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}" crossorigin="anonymous">
+
+      <script type="text/javascript" src="{{ url_for('static', filename='main.js') }}">
+
+      </script>	
+
+    </head>
+  <body id="main">
+      <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+          <ul class="navbar-nav">
+              <a class="nav-link" href="#">Home</a>
+              <a class="nav-link" data-bind="click:$root.goToCreateFeature">New Feature Request</a>
+
+          </ul>
+      </nav>
+
+    <div class="container">
+
+		<div class="row mt-3">
+			<div class = "col-1"></div>
+			<div class = "col-10"></div>
+			<div class = "col-1"></div>
 		</div>
-		<div class = "col-2"></div>
-	</div>
-	<div class="row">
-		<div class = "col-1"></div>
-		<div class = "col-10">
-		<form>
-			<div class = "form-group">
-				<label for="titleInput">Feature Title</label>
-				<input type="text" class="form-control" id="titleInput" aria-describedby="emailHelp" placeholder="Enter Title">
+		<!--  feature list -->
+		<div data-bind="foreach: features, visible:(!selectedFeatureData() && !shouldCreateData())">
+			<div class="row">
+				<div class = "col"></div>
+				<div class = "col-10">
+					<div class="card mt-3">
+					  <div class="card-block">
+					    <h4 class="card-title" data-bind="text:title"></h4>
+					    <p class="card-text" data-bind="text:description"></p>
+					    <button  data-bind="click: $root.goToFeature" type="button" class="btn btn-primary">View</button>
+						<button data-bind="click: $root.editFeature" type="button"  class="btn btn-warning">Edit</button>
+					  </div>
+					</div>
+				</div>
+				<div class = "col"></div>
 			</div>
-			<div class="form-group">
-   				 <label for="description">Feature Description</label>
-    			 <textarea class="form-control" id="exampleTextarea" rows="20"></textarea>
-  			</div>
-  			 <div class="form-group">
-    			<label for="priority">Priority</label>
-			    <select class="form-control" id="priority">
-			      <option>1</option>
-			      <option>2</option>
-			      <option>3</option>
-			      <option>4</option>
-			      <option>5</option>
-			    </select>
-  			</div>
-		</form>
 		</div>
-		<div class = "col-1"></div>
-	</div>
-{% endblock %}
+		<!--  feature details -->
+		<div class="row" data-bind="visible:!shouldEditData(), with:selectedFeatureData">
+			<div class = "col"></div>
+			<div class = "col-10">
+				<div class=" mt-3">
+				    <h4 data-bind="text:title"></h4>
+				    <p data-bind="text:description"></p>
+					<button  data-bind="click: $root.editFeature" type="button" class="btn btn-warning">Edit</button>
+				   	<button  data-bind="click: $root.deleteFeature" type="button" class="btn btn-danger">Delete</button>
+				</div>
+			</div>
+			<div class = "col"></div>
+		</div>
+
+		<!--  create feature -->
+		<div class="row" data-bind="visible:shouldCreateData() ">
+			<div class = "col"></div>
+			<div class = "col-10">
+				<div class="form-group">
+					<label for="Feature Title">Feature Title</label>
+				    <input  class="form-control" type="text" data-bind="value:newFeatureTitle, placeholder:newFeatureTitle"/>
+				</div>
+				<div class="form-group">
+					    <label for="priorityNew">Priority</label>
+	    				<select class="form-control" id="priorityNew" data-bind="value:newFeaturePriority">
+	    					      <option>1</option>
+							      <option>2</option>
+							      <option>3</option>
+							      <option>4</option>
+							      <option>5</option>
+	    				</select>
+				</div>
+				<div class="form-group">
+					<label for="featureDescriptionNew">Description</label>
+				    <textarea  id = "featureDescriptionNew" class="form-control" class="card-text" data-bind="value:newFeatureDescription" rows="5"></textarea>
+				</div>
+				<button type="submit" class="btn btn-primary">Update</button>
+				<button type="button" class="btn btn-danger" data-bind = "click: $root.goToFeature" >Cancel</button>
+			</div>
+			<div class = "col"></div>
+		</div>
+
+		<!--  edit feature -->
+		<div class="row" data-bind="visible:shouldEditData(), with:selectedFeatureData">
+			<div class = "col"></div>
+			<div class = "col-10">
+				<div class="form-group">
+					<label for="Feature Title">Feature Title</label>
+				    <input  class="form-control" type="text" data-bind="value:title" placeholder = "Feature Title"/>
+				</div>
+				<div class="form-group">
+				    <label for="priority">Priority</label>
+					<select class="form-control" id="priority" data-bind="value:priority">
+				      <option>1</option>
+				      <option>2</option>
+				      <option>3</option>
+				      <option>4</option>
+				      <option>5</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="featureDescription">Description</label>
+				    <textarea  id = "featureDescription" class="form-control" class="card-text" data-bind="value:description" placeholder = "feature description" rows="5"></textarea>
+				 </div>
+				<button type="button" class="btn btn-primary" data-bind ="click: $root.save">create</button>
+				<button type="button" class="btn btn-danger" data-bind = "click: $root.goToFeature" >Cancel</button>
+			</div>
+			<div class = "col"></div>
+		</div>
+    </div> <!-- /container -->
+  </body>
+</html>

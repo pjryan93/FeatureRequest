@@ -15,7 +15,8 @@ class FeatureSchema(Schema):
 class FeatureResource(Resource):
     def get(self,feature_id=None):
         if feature_id is None:
-            data =  {'features': [toJson(feature,FeatureModelSchema()) for feature in Feature.get_all()]}
+            schema = FeatureModelSchema(many=True)
+            data =  schema.dump(Feature.get_all())
         else:
             feature = Feature.query.get(feature_id)
             if feature is None:
