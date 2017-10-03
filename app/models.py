@@ -27,10 +27,19 @@ class Feature(db.Model):
     def save(self):
         db.session.add(self)
         db.session.commit()
-
+    def incrementPriorities(self,new_priority,upper_bound):
+        features_to_increment = Feature.query.filter((Feature.priority >= new_priority) & (Feature.priority < upper_bound))
+        for feature in features_to_increment:
+            feature.priority = feature.priority + 1
+            feature.save()
+    def decrementPriorities(self,new_priority,lower_bound):
+        features_to_increment = Feature.query.filter((Feature.priority > lower_bound) & (Feature.priority <= new_priority))
+        for feature in features_to_increment:
+            feature.priority = feature.priority - 1
+            feature.save()
     @staticmethod
     def get_all():
-        return Feature.query.all()
+        return Feature.query.order_by(Feature.priority).all()
 
     def delete(self):
         db.session.delete(self)
@@ -38,3 +47,14 @@ class Feature(db.Model):
 
     def __repr__(self):
         return "<Feature: {}>".format(self.title)
+
+
+
+
+
+
+
+
+
+
+

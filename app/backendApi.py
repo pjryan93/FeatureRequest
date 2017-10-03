@@ -33,6 +33,7 @@ class FeatureResource(Resource):
         if errors:
             return jsonify(errors), 422
         new_feature = Feature(data['title'],data['description'],data['priority'])
+        new_feature.incrementPriorities(data['priority'])
         new_feature.save()
         data_to_return = toJson(new_feature,FeatureModelSchema())
         return data_to_return , 201
@@ -45,6 +46,12 @@ class FeatureResource(Resource):
         if errors:
             return jsonify(errors), 422
         updated_feature = Feature.query.get(feature_id)
+        #move up the list
+        if data['priority'] < updated_feature.priority:
+            updated_feature.incrementPriorities(data['priority'],updated_feature.priority)
+        #move down the list
+        elif data['priority'] > updated_feature.priority:
+            updated_feature.decrementPriorities(data['priority'],updated_feature.priority)
         updated_feature.update(data['title'],data['description'],data['priority'])
         updated_feature.save()
         data_to_return = toJson(updated_feature,FeatureModelSchema())
