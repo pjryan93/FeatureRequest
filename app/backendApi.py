@@ -7,6 +7,7 @@ from models import Feature
 class FeatureModelSchema(ModelSchema):
     class Meta:
         model = Feature
+
 class FeatureSchema(Schema):
     title = fields.Str(strict = True)
     description = fields.Str(strict = True)
@@ -23,6 +24,7 @@ class FeatureResource(Resource):
                 return {'message': 'Does not exist'}, 404
             data =  toJson(Feature.query.get(feature_id),FeatureModelSchema())
         return data, 200
+
     def post(self):
         json = request.get_json()
         if not json:
@@ -34,6 +36,7 @@ class FeatureResource(Resource):
         new_feature.save()
         data_to_return = toJson(new_feature,FeatureModelSchema())
         return data_to_return , 201
+
     def put(self,feature_id=None):
         json = request.get_json()
         if not json or feature_id is None:
@@ -46,6 +49,7 @@ class FeatureResource(Resource):
         updated_feature.save()
         data_to_return = toJson(updated_feature,FeatureModelSchema())
         return data_to_return , 200
+
     def delete(self,feature_id=None):
         if feature_id is None:
             return {'message': 'No input data provided'}, 400
@@ -54,7 +58,6 @@ class FeatureResource(Resource):
             return {'message': 'Invalid id'}, 400
         feature_to_delete.delete()
         return {'message': 'success'}, 200
-
 
 def toJson(feature_to_serialize,schema_to_use):
         data , errors = schema_to_use.dump(feature_to_serialize)

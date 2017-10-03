@@ -38,28 +38,34 @@
 
     <div class="container">
 
-		<div class="row mt-3">
-			<div class = "col-1"></div>
-			<div class = "col-10"></div>
-			<div class = "col-1"></div>
-		</div>
-		<!--  feature list -->
-		<div data-bind="foreach: features, visible:(!selectedFeatureData() && !shouldCreateData())">
-			<div class="row">
-				<div class = "col"></div>
-				<div class = "col-10">
-					<div class="card mt-3">
-					  <div class="card-block">
-					    <h4 class="card-title" data-bind="text:title"></h4>
-					    <p class="card-text" data-bind="text:description"></p>
-					    <button  data-bind="click: $root.goToFeature" type="button" class="btn btn-primary">View</button>
-						<button data-bind="click: $root.editFeature" type="button"  class="btn btn-warning">Edit</button>
-					  </div>
-					</div>
+    <div class = "row pt-3">
+    	<div class = "col"></div>
+    	<div class = "col-10">
+	    	<div class = "card" data-bind = "visible:(!selectedFeatureData() && !shouldCreateData())" >
+	    		<div class="card-block">
+		    		<div class = "card-title d-flex  align-items-center">
+		    			<h4 class = "mr-auto p-2">Feature Requests</h4>
+		    			<div class = "ml-auto px-4">
+		    				<button  type="button" class="btn btn-default">Sort</button>
+		    			</div>
+		    		</div>
+					<ul class= "list-group  list-group-flush">
+						<div data-bind ="foreach: features">
+							<li class = "list-group-item">
+								<div class="d-flex  align-items-center">
+							  		<h3 class = ' ml-0 pr-3 priority-text' data-bind="text:priority"></h3>
+							    	<a data-bind="click:$root.goToFeature, attr: { href :'#'+id}">
+							    		<lead   data-bind="text:title"></lead>
+							    	</a>
+						    	</div>
+							</li>
+						</div> 
+					</ul>
 				</div>
-				<div class = "col"></div>
 			</div>
 		</div>
+		<div class = "col"></div>
+	</div>
 		<!--  feature details -->
 		<div class="row" data-bind="visible:!shouldEditData(), with:selectedFeatureData">
 			<div class = "col"></div>
@@ -96,7 +102,7 @@
 					<label for="featureDescriptionNew">Description</label>
 				    <textarea  id = "featureDescriptionNew" class="form-control" class="card-text" data-bind="value:newFeatureDescription" rows="5"></textarea>
 				</div>
-				<button type="submit" class="btn btn-primary">Update</button>
+				<button data-bind="click:$root.create"type="button"  class="btn btn-primary">Update</button>
 				<button type="button" class="btn btn-danger" data-bind = "click: $root.goToFeature" >Cancel</button>
 			</div>
 			<div class = "col"></div>
@@ -124,7 +130,7 @@
 					<label for="featureDescription">Description</label>
 				    <textarea  id = "featureDescription" class="form-control" class="card-text" data-bind="value:description" placeholder = "feature description" rows="5"></textarea>
 				 </div>
-				<button type="button" class="btn btn-primary" data-bind ="click: $root.save">create</button>
+				<button type="button" class="btn btn-primary" data-bind ="click: $root.update">Create</button>
 				<button type="button" class="btn btn-danger" data-bind = "click: $root.goToFeature" >Cancel</button>
 			</div>
 			<div class = "col"></div>

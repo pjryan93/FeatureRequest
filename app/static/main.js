@@ -33,7 +33,7 @@ $(function(){
 		self.goToFeatureList = function() { location.hash = '' };
 
 		self.goToFeature = function(feature) { 
-			location.hash = '/feature/' +feature.id 
+			location.hash ='/feature/' +feature.id 
 		};
 		self.editFeature = function(feature) { 
 			location.hash = '/edit/' +feature.id 
@@ -85,7 +85,7 @@ $(function(){
 				description:self.newFeatureDescription, 
 				priority:self.newFeaturePriority
 			})
-
+			console.log(newFeature);
 			var url = getUrl("/api/v1/feature")
 
 	        $.ajax(url, {
@@ -100,7 +100,6 @@ $(function(){
 
 		self.update = function() {
 			var url = getUrl("/api/v1/feature/") + self.selectedFeatureData().id;
-			console.log(data);
 	        $.ajax(url, {
 	            data: ko.toJSON(self.selectedFeatureData),
 	            type: "PUT", contentType: "application/json",

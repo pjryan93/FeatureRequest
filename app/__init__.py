@@ -14,12 +14,11 @@ def create_app(config_name):
     app.config.from_object(app_config[config_name])
     app.config.from_pyfile('../instance/config.py')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    dba = SQLAlchemy(app)
     register_extensions(app)
     ma = Marshmallow(app)
     api = Api(app)
-    from backendApi import FeatureResource
-    api.add_resource(FeatureResource, '/api/v1/feature', '/api/v1/feature/<int:feature_id>')
+    from backendApi import FeatureResource as fr
+    api.add_resource(fr, '/api/v1/feature', '/api/v1/feature/<int:feature_id>')
     from views import pages
     app.register_blueprint(pages)
     return app

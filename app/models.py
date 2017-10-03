@@ -1,4 +1,4 @@
-from . import db
+from extension import db
 
 class Feature(db.Model):
 

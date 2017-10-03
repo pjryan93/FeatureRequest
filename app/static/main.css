@@ -1,10 +1,15 @@
 body{
-background:#F5F5F5;
+	background:#F5F5F5;
 }
 .navbar {
-background:#00897B;
+	background:#00897B;
 }
 .nav-link {
-color:#FAFAFA !important;
-
+	color:#FAFAFA !important;
+}
+.priority-text{
+	color:#BDBDBD !important;
+}
+.card-title .btn-default{
+	background-color:#E0E0E0;
 }
