@@ -6,10 +6,13 @@ $(function(){
 		return BASE_URL.concat(url);
 	}
 
+	var currentDate = (new Date()).toISOString().split('T')[0];
+
 	function Feature(data){
 		this.id = data.id;
 		this.title = data.title;
 		this.description = ko.observable(data.description);
+		this.target_date = ko.observable(data.target_date);
 		this.priority = ko.observable(data.priority);
 	}
 
@@ -27,7 +30,7 @@ $(function(){
 		self.shouldEditData = ko.observable();
 		self.shouldCreateData = ko.observable();
 
-		self.pageTitle = "Requested Features";
+		self.inputdate = ko.observable(currentDate);
 
 		//routing functions
 		self.goToFeatureList = function() { location.hash = '' };
@@ -83,7 +86,8 @@ $(function(){
 			newFeature = new Feature({
 				title:self.newFeatureTitle,
 				description:self.newFeatureDescription, 
-				priority:self.newFeaturePriority
+				priority:self.newFeaturePriority,
+				target_date:self.inputdate
 			})
 			console.log(newFeature);
 			var url = getUrl("/api/v1/feature")
@@ -97,6 +101,7 @@ $(function(){
 	            }
 	        });
 		};
+
 
 		self.update = function() {
 			var url = getUrl("/api/v1/feature/") + self.selectedFeatureData().id;

@@ -1,18 +1,22 @@
 from flask_restful import abort, Api, Resource
 from flask import request, jsonify
-from marshmallow import Schema, fields, pprint
+from marshmallow import Schema, fields, pprint, pre_dump
 from marshmallow_sqlalchemy import ModelSchema
 from models import Feature
 
 class FeatureModelSchema(ModelSchema):
     class Meta:
         model = Feature
-
+    @pre_dump
+    def cast_date(self,data):
+        print "post"
+        data.target_date = data.target_date.date()
+        return data
 class FeatureSchema(Schema):
     title = fields.Str(strict = True)
     description = fields.Str(strict = True)
     priority = fields.Integer(strict = True)
-
+    target_date = fields.Date()
 class FeatureResource(Resource):
     def get(self,feature_id=None):
         if feature_id is None:
@@ -29,10 +33,12 @@ class FeatureResource(Resource):
         json = request.get_json()
         if not json:
             return {'message': 'No input data provided'}, 400
+        print json
         data, errors = FeatureSchema().load(json)
         if errors:
             return jsonify(errors), 422
-        new_feature = Feature(data['title'],data['description'],data['priority'])
+        print data
+        new_feature = Feature(data['title'],data['description'],data['priority'],data['target_date'])
         new_feature.incrementPriorities(data['priority'])
         new_feature.save()
         data_to_return = toJson(new_feature,FeatureModelSchema())
@@ -52,7 +58,7 @@ class FeatureResource(Resource):
         #move down the list
         elif data['priority'] > updated_feature.priority:
             updated_feature.decrementPriorities(data['priority'],updated_feature.priority)
-        updated_feature.update(data['title'],data['description'],data['priority'])
+        updated_feature.update(data['title'],data['description'],data['priority'],data['target_date'])
         updated_feature.save()
         data_to_return = toJson(updated_feature,FeatureModelSchema())
         return data_to_return , 200

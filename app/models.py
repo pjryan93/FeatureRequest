@@ -8,27 +8,32 @@ class Feature(db.Model):
     title = db.Column(db.String(255))
     description = db.Column(db.String(2500))
     priority = db.Column(db.Integer)
-    target_date = db.Column(db.DateTime, default=db.func.current_timestamp())
-    date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
+    target_date = db.Column(db.Date(), default = db.func.current_timestamp.date())
+    date_created = db.Column(db.DateTime, default = db.func.current_timestamp())
     date_modified = db.Column(
         db.DateTime, 
         default=db.func.current_timestamp(),
         onupdate=db.func.current_timestamp()
     )
 
-    def __init__(self, title, description, priority):
+    def __init__(self, title, description, priority,target_date):
         self.title = title
         self.description = description
         self.priority = priority
-    def update(self, title, description, priority):
+        self.target_date = target_date
+    def update(self, title, description, priority,target_date):
         self.title = title
         self.description = description
         self.priority = priority
+        self.target_date = target_date
     def save(self):
         db.session.add(self)
         db.session.commit()
-    def incrementPriorities(self,new_priority,upper_bound):
-        features_to_increment = Feature.query.filter((Feature.priority >= new_priority) & (Feature.priority < upper_bound))
+    def incrementPriorities(self,new_priority,upper_bound = None):
+        if upper_bound is None:
+            features_to_increment = Feature.query.filter(Feature.priority >= new_priority)
+        else:
+            features_to_increment = Feature.query.filter((Feature.priority >= new_priority) & (Feature.priority < upper_bound))
         for feature in features_to_increment:
             feature.priority = feature.priority + 1
             feature.save()
