@@ -9,6 +9,7 @@ COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 COPY apache/FeatureRequest.conf /etc/apache2/sites-available/FeatureRequest.conf
 COPY apache/servername.conf /etc/apache2/conf-available/servername.conf
+COPY apache/apache.wsgi /var/www/featurerequest/servername.conf
 run service apache2 start
 RUN a2ensite FeatureRequest
 RUN a2enconf servername

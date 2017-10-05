@@ -1,6 +1,6 @@
 $(function(){
 
-	var BASE_URL = "http://localhost:5000";
+	var BASE_URL = "";
 	var API_URL = "/api/v1/feature/"
 	function getUrl(url) {
 		return BASE_URL.concat(url);
