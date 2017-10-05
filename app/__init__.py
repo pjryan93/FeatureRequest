@@ -17,8 +17,10 @@ def create_app(config_name):
     register_extensions(app)
     ma = Marshmallow(app)
     api = Api(app)
-    from backendApi import FeatureResource as fr
-    api.add_resource(fr, '/api/v1/feature', '/api/v1/feature/<int:feature_id>')
+    from backendApi import FeatureResource as featureDataResource
+    from backendApi import FeatureMetaDataResource as metaDataResource
+    api.add_resource(featureDataResource, '/api/v1/feature', '/api/v1/feature/<int:feature_id>')
+    api.add_resource(metaDataResource, '/api/v1/meta')
     from views import pages
     app.register_blueprint(pages)
     return app
