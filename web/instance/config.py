@@ -11,6 +11,11 @@ class Config(object):
 class DevelopmentConfig(Config):
     """Configurations for Development."""
     DEBUG = True
+    POSTGRES_DEFAULT_USER = 'postgres'
+    POSTGRES_USER = 'dev'
+    POSTGRES_PASSWORD = 'devpassword'
+    POSTGRES_DB = 'flask_api'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://' + POSTGRES_USER + ':' + POSTGRES_PASSWORD + '@postgres:5432/' + POSTGRES_DB
 
 class TestingConfig(Config):
     """Configurations for Testing, with a separate test database."""
