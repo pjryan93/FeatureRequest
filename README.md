@@ -3,23 +3,34 @@ Simple CRUD with a decoupled backend (Flask) and frontend (knockout.js). Deploye
 
 ## Deploy
 ### Tested on AWS EC2 ubuntu
+
+Install Docker
+
+`
+apt-get install docker docker.io
+`
+
 Clone the application
 
 `
 git clone https://github.com/pjryan93/FeatureRequest.git
 `
 
-Install Docker
-
 `
-apt-get install docker docker.io
 cd FeatureRequest
 `
+
 Next you need to create the Dockerfile for postgres
 
 `
 cd web 
+`
+
+`
 python create_db.py
+`
+
+`
 cd ..
 `
 
