@@ -1,5 +1,4 @@
 import os
-from app import app
 Dockerfile = 'Dockerfile'
 source_dir = os.path.abspath(os.curdir)
 destination_dir = os.path.join(source_dir, '../postgresql')
