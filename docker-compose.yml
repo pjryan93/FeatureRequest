@@ -34,5 +34,5 @@ services:
    build: ./postgresql
    volumes_from:
      - data
-   ports:
-     - "5432:5432"
+   expose:
+     - "5432"
