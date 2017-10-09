@@ -7,7 +7,7 @@ services:
      - "8000"
    volumes:
      - /usr/src/app/app/static
-   command: /usr/local/bin/gunicorn -w 2 -b :8000 app:create_app('development')
+   command: /usr/local/bin/gunicorn --chdir ./app -w 2 -b :8000 "app:create_app('development')"
    depends_on:
      - postgres
  
