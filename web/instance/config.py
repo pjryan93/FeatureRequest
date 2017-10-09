@@ -11,7 +11,6 @@ class Config(object):
 class DevelopmentConfig(Config):
     """Configurations for Development."""
     DEBUG = True
-    POSTGRES_DEFAULT_USER = 'postgres'
     POSTGRES_USER = 'dev'
     POSTGRES_PASSWORD = 'devpassword'
     POSTGRES_DB = 'flask_api'
