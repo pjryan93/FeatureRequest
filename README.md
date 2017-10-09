@@ -41,7 +41,7 @@ docker-compose build
 `
 
 `
-docker-compose up
+docker-compose up -d
 `
 
 Now we need to initialize the database.  To do this you need to open a shell in the flask applicaitons container.
